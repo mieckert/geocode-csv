@@ -9,7 +9,7 @@ be present in the input CSV file).
 
 You will need a key from https://locationiq.com to run this.
 
----
+```
 USAGE:
     geocode-csv --city <city> --country <country> --input <input> --key <key> --lat <lat> --lng <lng> --output <output> --postalcode <postalcode> --street <street>
 
@@ -27,4 +27,4 @@ OPTIONS:
     -o, --output <output>            
     -p, --postalcode <postalcode>    
     -s, --street <street>            
----    
+```   
