@@ -237,7 +237,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "geocode"
+name = "geocode-csv"
 version = "0.1.0"
 dependencies = [
  "csv",

@@ -4,30 +4,59 @@ use structopt::StructOpt;
 use serde::Serialize;
 
 #[derive(StructOpt, Debug)]
-#[structopt(name = "basic")]
+#[structopt(name = "basic", set_term_width(80))]
 struct CliOptions {
-    #[structopt(short, long, parse(from_os_str))]
+    /// File name for the input CSV file
+    #[structopt(short, long, parse(from_os_str), display_order(10))]
     input: PathBuf,
 
-    #[structopt(short, long, parse(from_os_str))]
+    /// File name for the output CSV file
+    #[structopt(short, long, parse(from_os_str), display_order(11))]
     output: PathBuf,
 
-    #[structopt(short, long)]
+    /// Your key for accessing locationiq.com
+    #[structopt(short, long, display_order(20))]
     key: String,
 
-    #[structopt(short, long)]
+    /// Street input column (0-indexed or header name)
+    ///
+    /// Street (input) column in the CSV file, specified either as 0-indexed number or as the text of the column header
+    #[structopt(short, long, display_order(50))]
     street: String,
-    #[structopt(short, long)]
+    /// Postalcode input column (0-indexed or header name)
+    ///
+    /// Postal code (input) column in the CSV file, specified either as 0-indexed number or as the text of the column header
+    #[structopt(short, long, display_order(51))]
     postalcode: String,
-    #[structopt(short, long)]
+    /// City input column (0-indexed or header name)
+    ///
+    /// City (input) column in the CSV file, specified either as 0-indexed number or as the text of the column header
+    #[structopt(short, long, display_order(52))]
     city: String,
-    #[structopt(short = "y", long)]
+    /// Country input column (0-indexed or header name)
+    ///
+    /// Country (input) column in the CSV file, specified either as 0-indexed number or as the text of the column header
+    #[structopt(short = "y", long, display_order(53))]
     country: String,
 
-    #[structopt(short = "t", long)]
+    /// Latitude output column (0-indexed or header name)
+    /// 
+    /// Latitude output column in the CSV file, specified either as 0-indexed number or as the text of the column header.
+    /// Note that this column must already be present in the input CSV file (can be empty) and that any contents
+    /// in the corresponding fields will be overwritten
+    #[structopt(short = "t", long, display_order(70))]
     lat: String,
-    #[structopt(short = "g", long)]
+    /// Longitude output column (0-indexed or header name)
+    /// 
+    /// Longitude output column in the CSV file, specified either as 0-indexed number or as the text of the column header.
+    /// Note that this column must already be present in the input CSV file (can be empty) and that any contents
+    /// in the corresponding fields will be overwritten
+    #[structopt(short = "g", long, display_order(71))]
     lng: String,
+
+    // TODO:
+    // - make wait between two requests to locationiq.com configurable (currently hardcoded to 2sec)
+    // - give possibility to add the output columns rather than having them already be present in the input file
 }
 
 #[derive(Debug)]
@@ -57,7 +86,7 @@ impl Columns {
             .iter()
             .position(|s| s == opts.city)
             .ok_or("Header columns for city not found"))?;
-        let country = opts.postalcode.parse::<usize>().or( headers
+        let country = opts.country.parse::<usize>().or( headers
             .iter()
             .position(|s| s == opts.country)
             .ok_or("Header columns for country not found"))?;
