@@ -18,13 +18,24 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -c, --city <city>                
-    -y, --country <country>          
-    -i, --input <input>              
-    -k, --key <key>                  
-    -t, --lat <lat>                  
-    -g, --lng <lng>                  
-    -o, --output <output>            
-    -p, --postalcode <postalcode>    
-    -s, --street <street>            
+    -i, --input <input>              File name for the input CSV file
+    -o, --output <output>            File name for the output CSV file
+    -k, --key <key>                  Your key for accessing locationiq.com
+    -s, --street <street>
+            Street input column (0-indexed or header name)
+
+    -p, --postalcode <postalcode>
+            Postalcode input column (0-indexed or header name)
+
+    -c, --city <city>
+            City input column (0-indexed or header name)
+
+    -y, --country <country>
+            Country input column (0-indexed or header name)
+
+    -t, --lat <lat>
+            Latitude output column (0-indexed or header name)
+
+    -g, --lng <lng>
+            Longitude output column (0-indexed or header name)
 ```   
