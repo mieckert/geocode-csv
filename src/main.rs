@@ -69,35 +69,35 @@ struct Columns {
     lng: usize,
 }
 
+/* Shortcut macro for
+        
+    let street = opts.street.parse::<usize>().or( headers
+        .iter()
+        .position(|s| s == opts.street)
+        .ok_or("Header columns for street not found"))?;
+        
+*/
+macro_rules! let_num_or_header {
+    ($i:ident = $o:expr, $h:expr) => {
+        let $i = $o.$i.parse::<usize>().or( $h
+            .iter()
+            .position(|s| s == $o.$i)
+            .ok_or( concat!("Header columns for ", stringify!($i), " not found") ))?;
+    };
+}
+
 impl Columns {
     fn from_opts_and_header(
         opts: &CliOptions,
         headers: &csv::StringRecord,
     ) -> Result<Self, Box<dyn Error>> {
-        let street = opts.street.parse::<usize>().or( headers
-            .iter()
-            .position(|s| s == opts.street)
-            .ok_or("Header columns for street not found"))?;
-        let postalcode = opts.postalcode.parse::<usize>().or( headers
-            .iter()
-            .position(|s| s == opts.postalcode)
-            .ok_or("Header columns for postalcode not found"))?;
-        let city = opts.city.parse::<usize>().or( headers
-            .iter()
-            .position(|s| s == opts.city)
-            .ok_or("Header columns for city not found"))?;
-        let country = opts.country.parse::<usize>().or( headers
-            .iter()
-            .position(|s| s == opts.country)
-            .ok_or("Header columns for country not found"))?;
-        let lat = headers
-            .iter()
-            .position(|s| s == opts.lat)
-            .ok_or("Header columns for lat not found")?;
-        let lng = headers
-            .iter()
-            .position(|s| s == opts.lng)
-            .ok_or("Header columns for lng not found")?;    
+
+        let_num_or_header!(street = opts, headers);
+        let_num_or_header!(postalcode = opts, headers);
+        let_num_or_header!(city = opts, headers);
+        let_num_or_header!(country = opts, headers);
+        let_num_or_header!(lat = opts, headers);
+        let_num_or_header!(lng = opts, headers);
 
         Ok(Self { street, postalcode, city, country, lat, lng })
     }
